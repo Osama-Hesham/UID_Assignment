@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="row pt-3">
+    <div class="col-12 text-center">
+      <h2 class="text-primary">Task Manager</h2>
+    </div>
+  </div>
+  <div class="row pt-3">
+    <div class="col-12 text-center">
+      <button class="btn btn-outline-success" (click)="openModel()">Click to Add New Task</button>
+    </div>
+  </div>
+  <br>
+  
+  @if (TaskList.length !== 0) {
+  <div class="row">
+    @for (item of TaskList; track $index) {
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4>{{item.name}}</h4>
+        </div>
+        <div class="card-body">
+          <p><strong>Description:</strong> {{item.description}}</p>
+        </div>
+        <div class="card-footer text-center">
+          <small><strong>Date:</strong> {{item.date}}</small>
+          <div class="mt-2">
+            <button class="btn btn-sm btn-warning mx-1" (click)="EditTasks(item)">Edit Task</button>
+            <button class="btn btn-sm btn-danger mx-1" (click)="DeleteTasks(item)">Delete Task</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  } @else {
+    <div class="col-12 p-4 text-center">
+      <p class="text-danger">No Tasks Found!</p>
+    </div>
+  }
+</div>
+
+<div class="container">
+  <div class="modal" id="Model" #Model>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h4 class="modal-title">Insert Your Task</h4>
+          <button type="button" class="btn-close text-white" (click)="closeModel()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <label for="" class="form-label">Name</label>
+              <input type="text" [(ngModel)]="task.name" class="form-control" placeholder="Name">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <label for="" class="form-label">Description</label>
+              <input type="text" [(ngModel)]="task.description" class="form-control" placeholder="Description">
+            </div>
+            <div class="col-md-6">
+              <label for="" class="form-label">Date</label>
+              <input type="date" [(ngModel)]="task.date" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModel()">Close</button>
+          @if (task.id == 0 && (!task.name || !task.description || !task.date)) {
+          <button type="button" class="btn btn-primary disabled">Save Task</button>
+          } @else {
+          <button type="button" class="btn btn-primary" (click)="task.id == 0 ? SaveTask() : (!task.name || !task.description) ? null : UpdateTask()">Save Task</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
